@@ -16,14 +16,14 @@ git merge v1.0.2
 # keygen
 go run cmd/license-keygen/main.go --out .beagle/id_beagle
 
-# create
+# create 10year license
 go run cmd/license-create/main.go \
 --in .beagle/id_beagle \
 --iss "Beagle Cloud Team" \
 --cus "比格大数据" \
 --sub "研发中心" \
 --typ "基础版本" \
---exp "26352h0m0s"
+--exp "87840h0m0s"
 
 # verify
 go run cmd/license-verify/main.go \
