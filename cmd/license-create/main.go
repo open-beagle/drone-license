@@ -26,6 +26,7 @@ var (
 	typ = flag.String("typ", "", "")
 	lim = flag.Int("lim", 0, "")
 	exp = flag.Duration("exp", month, "")
+	dat = flag.String("dat", "", "")
 )
 
 func main() {
@@ -45,6 +46,7 @@ func main() {
 		Lim: *lim,
 		Exp: time.Now().UTC().Add(*exp),
 		Iat: time.Now().UTC(),
+		Dat: []byte(*dat),
 	}
 
 	encoded, err := license.Encode(privateKey)

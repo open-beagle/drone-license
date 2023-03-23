@@ -23,7 +23,8 @@ go run cmd/license-create/main.go \
 --cus "比格大数据" \
 --sub "研发中心" \
 --typ "基础版本" \
---exp "87840h0m0s"
+--exp "87840h0m0s" \
+--dat '{"repos":0,"users":0,"nodes":0,"builds":0}'
 
 # verify
 go run cmd/license-verify/main.go \
