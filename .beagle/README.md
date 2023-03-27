@@ -24,7 +24,7 @@ go run cmd/license-create/main.go \
 --sub "研发中心" \
 --typ "基础版本" \
 --exp "87840h0m0s" \
---dat '{"repos":0,"users":0,"nodes":0,"builds":0}'
+--dat '{"kind":"standard","repos":0,"users":0,"nodes":0,"builds":0}'
 
 # verify
 go run cmd/license-verify/main.go \
