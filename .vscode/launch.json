@@ -1,0 +1,46 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        // {
+        //     "name": "license-keygen",
+        //     "type": "go",
+        //     "request": "launch",
+        //     "mode": "auto",
+        //     "program": "${workspaceFolder}/cmd/license-keygen/main.go",
+        //     "args": [
+        //         "--out=id_server"
+        //     ]
+        // },
+        {
+            "name": "license-create",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/license-create/main.go",
+            "args": [
+                "--in=${workspaceFolder}/.beagle/id_server",
+                "--out=${workspaceFolder}/.beagle/license.txt",
+                "--iss=北京比格大数据有限公司",
+                "--cus=数据计算实例",
+                "--sub=研发中心",
+                "--typ=试用版",
+                "--exp=2207h59m59.999961729s",
+                "--dat={\"productID\":\"ROY-BJ-08-XCSHJSPT\",\"mac\":\"a2:ed:6f:a5:37:a8\"}"
+            ]
+        },
+        // {
+        //     "name": "license-verify",
+        //     "type": "go",
+        //     "request": "launch",
+        //     "mode": "auto",
+        //     "program": "${workspaceFolder}/cmd/license-verify/main.go",
+        //     "args": [
+        //         "--file=${workspaceFolder}/.beagle/license.txt",
+        //         "--pub=${workspaceFolder}/.beagle/id_server.pub"
+        //     ]
+        // }
+    ]
+}

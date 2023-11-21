@@ -31,3 +31,6 @@ go run cmd/license-verify/main.go \
 --pub .beagle/id_beagle.pub \
 --file license.txt
 ```
+
+
+ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags '-s -w' -o /home/code/go/src/github.com/open-beagle/drone-license/dist/lcs-amd64 /home/code/go/src/github.com/open-beagle/drone-license/cmd/license-verify

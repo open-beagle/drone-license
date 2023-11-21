@@ -37,4 +37,6 @@ func main() {
 	enc := json.NewEncoder(os.Stdout)
 	enc.SetIndent("", "  ")
 	enc.Encode(l)
+	// t := time.Now().AddDate(0, 3, 0)
+	// fmt.Println(t.Sub(time.Now()))
 }

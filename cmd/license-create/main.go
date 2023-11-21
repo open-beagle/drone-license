@@ -38,14 +38,18 @@ func main() {
 		os.Exit(1)
 	}
 
+	now := "2023-09-11 00:00:00"
+	iat, _ := time.Parse("2006-01-02 15:04:05", now)
+	last := "2023-12-31 23:59:59"
+	exp, _ := time.Parse("2006-01-02 15:04:05", last)
 	license := &license.License{
 		Iss: *iss,
 		Cus: *cus,
 		Sub: *sub,
 		Typ: *typ,
 		Lim: *lim,
-		Exp: time.Now().UTC().Add(*exp),
-		Iat: time.Now().UTC(),
+		Exp: exp.UTC(),
+		Iat: iat.UTC(),
 		Dat: []byte(*dat),
 	}
 

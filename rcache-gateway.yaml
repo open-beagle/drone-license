@@ -1,0 +1,143 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: rcache-gateway
+  labels:
+    app: rcache-gateway
+data:
+  config.yml: |
+    api:
+      dashboard: true
+      insecure: true
+
+    providers:
+      file:
+        directory: /data/gateway
+        watch: true
+
+    entryPoints:
+      http:
+        address: ":80"
+      traefik:
+        address: ":8380"
+
+  http.yml: |
+    http:
+      routers:
+        xc-store-paas-api:
+          entryPoints:
+          - "http"
+          rule: "PathPrefix(`/store-rcache/api`)"
+          service: "xc-store-paas-api"
+        xc-rcache-manage-api:
+          entryPoints:
+          - "http"
+          rule: "PathPrefix(`/store-rcachemgr/api`)"
+          service: "xc-rcache-manage-api"
+        xc-store-rcache:
+          entryPoints:
+          - "http"
+          rule: "PathPrefix(`/xc-rcachemgr/ui`)"
+          middlewares:
+          - "delepre"
+          service: "xc-store-rcache"
+        xc-common-ui:
+          entryPoints:
+          - "http"
+          rule: "PathPrefix(`/store-rcache/ui`)"
+          middlewares:
+          - "delepre"
+          service: "xc-common-ui"
+
+      services:
+        xc-store-paas-api:
+          loadBalancer:
+            servers:
+            - url: http://xc-store-paas-api:80/store-rcache/api
+        xc-rcache-manage-api:
+          loadBalancer:
+            servers:
+            - url: http://xc-rcache-manage-api:80/store-rcachemgr/api
+        xc-store-rcache:
+          loadBalancer:
+            servers:
+            - url: http://xc-store-rcache:80
+        xc-common-ui:
+          loadBalancer:
+            servers:
+            - url: http://xc-common-ui:8080
+      
+      middlewares:
+        delepre:
+          stripPrefix:
+            prefixes:
+            - "/store-rcache/ui"
+            - "/xc-rcachemgr/ui"
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: rcache-gateway
+  labels:
+    app: rcache-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rcache-gateway
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: rcache-gateway
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: rcache-gateway
+            defaultMode: 420
+        - name: data
+          configMap:
+            name: rcache-gateway
+            defaultMode: 420
+      containers:
+        - name: gateway
+          # image: "registry.cn-qingdao.aliyuncs.com/wod/awecloud-gateway:v6.0.7"
+          image: "traefik:v2.0"
+          args:
+            - "--configFile=/etc/gateway/config.yml"
+          ports:
+            - name: traefik
+              containerPort: 8380
+              protocol: TCP
+            - name: web
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /etc/gateway/config.yml
+              subPath: config.yml
+            - name: data
+              mountPath: /data/gateway/http.yml
+              subPath: http.yml
+          imagePullPolicy: Always
+      restartPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rcache-gateway
+  labels:
+    app: rcache-gateway
+spec:
+  ports:
+    - name: dashboard
+      protocol: TCP
+      port: 8380
+      targetPort: 8380
+    - name: http-xcqy
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: rcache-gateway
